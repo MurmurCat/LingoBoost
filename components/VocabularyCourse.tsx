@@ -5,7 +5,6 @@ import Card from './ui/Card';
 import Button from './ui/Button';
 import FullPageSpinner from './ui/Spinner';
 import { SpeakerIcon } from './icons/Icons';
-import { useAppContext } from '../contexts/AppContext';
 
 const GOAL = 2000;
 const BATCH_SIZE = 10;
@@ -104,7 +103,6 @@ const WordCard: React.FC<WordCardProps> = ({ wordData, onMarkLearned }) => {
 
 
 const VocabularyCourse: React.FC = () => {
-    const { learningLevel } = useAppContext();
     const [learnedWords, setLearnedWords] = useState<WordData[]>([]);
     const [currentBatch, setCurrentBatch] = useState<WordData[]>([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -135,7 +133,7 @@ const VocabularyCourse: React.FC = () => {
         setError(null);
         try {
             const wordStrings = learnedWords.map(w => w.word);
-            const data = await getWordBatch(learningLevel, BATCH_SIZE, wordStrings);
+            const data = await getWordBatch('B2', BATCH_SIZE, wordStrings);
             setCurrentBatch(data);
         } catch (err) {
             setError("Failed to fetch a new batch of words. Please try again.");
@@ -143,7 +141,7 @@ const VocabularyCourse: React.FC = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [learningLevel, learnedWords]);
+    }, [learnedWords]);
 
     const handleMarkAsLearned = (word: WordData) => {
         if (!learnedWords.some(w => w.word === word.word)) {

@@ -9,7 +9,7 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [learningLevel, setLearningLevel] = useState<LearningLevel>('B1');
+  const [learningLevel, setLearningLevel] = useState<LearningLevel>('B2');
 
   return (
     <AppContext.Provider value={{ learningLevel, setLearningLevel }}>
