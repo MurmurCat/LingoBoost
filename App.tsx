@@ -5,16 +5,21 @@ import VocabularyBuilder from './components/VocabularyBuilder';
 import GrammarPractice from './components/GrammarPractice';
 import ReadingComprehension from './components/ReadingComprehension';
 import ConversationPractice from './components/ConversationPractice';
+import VocabularyCourse from './components/VocabularyCourse';
 import { Section } from './types';
-import { BookIcon, ChatIcon, GrammarIcon, NewspaperIcon } from './components/icons/Icons';
+import { BookIcon, ChatIcon, GrammarIcon, NewspaperIcon, AcademicCapIcon } from './components/icons/Icons';
+import { AppProvider } from './contexts/AppContext';
+import LevelSelector from './components/LevelSelector';
 
-const App: React.FC = () => {
+const MainApp: React.FC = () => {
   const [activeSection, setActiveSection] = useState<Section>('vocabulary');
 
   const renderSection = () => {
     switch (activeSection) {
       case 'vocabulary':
         return <VocabularyBuilder />;
+      case 'vocabularyCourse':
+        return <VocabularyCourse />;
       case 'grammar':
         return <GrammarPractice />;
       case 'reading':
@@ -28,6 +33,7 @@ const App: React.FC = () => {
   
   const navItems = useMemo(() => [
     { id: 'vocabulary', label: 'Vocabulary', icon: <BookIcon /> },
+    { id: 'vocabularyCourse', label: 'Vocabulary Course', icon: <AcademicCapIcon /> },
     { id: 'grammar', label: 'Grammar', icon: <GrammarIcon /> },
     { id: 'reading', label: 'Reading', icon: <NewspaperIcon /> },
     { id: 'conversation', label: 'Chat', icon: <ChatIcon /> },
@@ -40,6 +46,7 @@ const App: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <aside className="lg:col-span-1">
             <div className="sticky top-24">
+              <LevelSelector />
               <nav className="bg-white rounded-xl shadow-md p-4">
                 <ul className="space-y-2">
                   {navItems.map(item => (
@@ -69,5 +76,14 @@ const App: React.FC = () => {
     </div>
   );
 };
+
+const App: React.FC = () => {
+  return (
+    <AppProvider>
+      <MainApp />
+    </AppProvider>
+  );
+};
+
 
 export default App;

@@ -1,11 +1,16 @@
-
-export type Section = 'vocabulary' | 'grammar' | 'reading' | 'conversation';
+export type Section = 'vocabulary' | 'grammar' | 'reading' | 'conversation' | 'vocabularyCourse';
+export type LearningLevel = 'B1' | 'B2';
 
 export interface WordData {
   word: string;
   definition: string;
-  example: string;
+  examples: string[];
   pronunciation: string;
+}
+
+export interface RussianExplanation {
+  explanation: string;
+  translatedExamples: string[];
 }
 
 export interface GrammarExercise {

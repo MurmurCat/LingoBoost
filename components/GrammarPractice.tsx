@@ -5,8 +5,10 @@ import { getGrammarExercise } from '../services/geminiService';
 import Card from './ui/Card';
 import Button from './ui/Button';
 import FullPageSpinner from './ui/Spinner';
+import { useAppContext } from '../contexts/AppContext';
 
 const GrammarPractice: React.FC = () => {
+  const { learningLevel } = useAppContext();
   const [exercise, setExercise] = useState<GrammarExercise | null>(null);
   const [userInput, setUserInput] = useState('');
   const [feedback, setFeedback] = useState<{ message: string, type: 'correct' | 'incorrect' } | null>(null);
@@ -22,7 +24,7 @@ const GrammarPractice: React.FC = () => {
     setFeedback(null);
     setShowAnswer(false);
     try {
-      const data = await getGrammarExercise();
+      const data = await getGrammarExercise(learningLevel);
       setExercise(data);
     } catch (err) {
       setError('Failed to fetch a grammar exercise. Please try again.');
@@ -30,12 +32,11 @@ const GrammarPractice: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [learningLevel]);
 
   useEffect(() => {
     fetchExercise();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [fetchExercise]);
   
   const handleCheckAnswer = () => {
     if (!exercise) return;

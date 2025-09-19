@@ -5,8 +5,10 @@ import { getReadingPassage } from '../services/geminiService';
 import Card from './ui/Card';
 import Button from './ui/Button';
 import FullPageSpinner from './ui/Spinner';
+import { useAppContext } from '../contexts/AppContext';
 
 const ReadingComprehension: React.FC = () => {
+  const { learningLevel } = useAppContext();
   const [data, setData] = useState<ReadingPassage | null>(null);
   const [userAnswers, setUserAnswers] = useState<number[]>([]);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -20,7 +22,7 @@ const ReadingComprehension: React.FC = () => {
     setUserAnswers([]);
     setIsSubmitted(false);
     try {
-      const passageData = await getReadingPassage();
+      const passageData = await getReadingPassage(learningLevel);
       setData(passageData);
       setUserAnswers(new Array(passageData.questions.length).fill(-1));
     } catch (err) {
@@ -29,12 +31,11 @@ const ReadingComprehension: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [learningLevel]);
 
   useEffect(() => {
     fetchPassage();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [fetchPassage]);
 
   const handleAnswerSelect = (questionIndex: number, optionIndex: number) => {
     if (isSubmitted) return;
